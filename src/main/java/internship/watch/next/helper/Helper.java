@@ -32,9 +32,9 @@ public class Helper {
             roleRepository.save(adminRole);
             roleRepository.save(userRole);
         }
+        createDefaultUser();
     }
 
-    @PostConstruct
     public void createDefaultUser() {
         if (usersRepository.count() == 0) {
             Role defaultUserRole = roleRepository.findByName("Admin");

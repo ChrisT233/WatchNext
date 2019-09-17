@@ -4,7 +4,7 @@ CREATE TABLE Role(id SERIAL PRIMARY KEY,
 
 CREATE TABLE Users(id SERIAL PRIMARY KEY,
         name VARCHAR(100),
-        email VARCHAR(100),
+        email VARCHAR(100) UNIQUE,
         password_hash VARCHAR(255),
         role INT,
         FOREIGN KEY(role) REFERENCES Role(id)
