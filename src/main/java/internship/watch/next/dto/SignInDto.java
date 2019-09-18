@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ResetPasswordDto {
+public class SignInDto {
     private String email;
+    private String password;
 }

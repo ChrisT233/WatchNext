@@ -5,8 +5,7 @@ import internship.watch.next.model.Users;
 import internship.watch.next.repository.RoleRepository;
 import internship.watch.next.repository.UsersRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -18,11 +17,8 @@ public class Helper {
 
     private final RoleRepository roleRepository;
     private final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @PostConstruct
     public void createRoles() {
@@ -39,7 +35,7 @@ public class Helper {
         if (usersRepository.count() == 0) {
             Role defaultUserRole = roleRepository.findByName("Admin");
             Users defaultUser = new Users("Cristi", "cristi@cristi.ro",
-                    bCryptPasswordEncoder().encode("parolaCristi"), defaultUserRole);
+                    passwordEncoder.encode("parolaCristi"), defaultUserRole);
             usersRepository.save(defaultUser);
         }
     }

@@ -1,7 +1,8 @@
 package internship.watch.next.controller;
 
 import internship.watch.next.dto.ResetPasswordDto;
-import internship.watch.next.dto.UserDto;
+import internship.watch.next.dto.SignInDto;
+import internship.watch.next.dto.SignUpDto;
 import internship.watch.next.service.AuthenticationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
-    //todo
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<?> signUp(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> signUp(@RequestBody SignUpDto signUpDto) {
+        authenticationService.signup(
+                signUpDto.getEmail(),
+                signUpDto.getPassword(),
+                signUpDto.getConfirmPassword(),
+                signUpDto.getUsername()
+        );
         return ResponseEntity.ok().build(); //strictly for web requests
     }
+    @RequestMapping(value = "/signin", method = RequestMethod.POST)
+    public ResponseEntity<?> signIn(@RequestBody SignInDto signInDto) {
+        return ResponseEntity.ok().build();
+    }
 
-    //todo
     @RequestMapping(value = "/reset-password", method = RequestMethod.POST)
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDto resetPasswordDto) {
+        authenticationService.resetPassword(
+                resetPasswordDto.getEmail()
+        );
         return ResponseEntity.ok().build();
     }
 }

@@ -5,11 +5,9 @@ import internship.watch.next.model.Users;
 import internship.watch.next.repository.RoleRepository;
 import internship.watch.next.repository.UsersRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.apache.commons.text.RandomStringGenerator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.nio.charset.Charset;
-import java.util.Random;
 
 //in order for SB to be able to find the service / and to know what kind of class it is
 @Service
@@ -18,8 +16,10 @@ import java.util.Random;
 public class AuthenticationService {
 
     private final UsersRepository usersRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+
+    private final MailService mailService;
 
     public void signup(String email, String password, String confirmPassword, String username) {
         if (usersRepository.findByEmail(email) == null) {
@@ -37,17 +37,19 @@ public class AuthenticationService {
     }
 
     private String generateNewPassword() {
-        byte[] array = new byte[7]; // length is bounded by 7
-        new Random().nextBytes(array);
-        String generatedPassword = new String(array, Charset.forName("UTF-8"));
-        return passwordEncoder.encode(generatedPassword);
+        RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(33, 127)
+                .build();
+        return pwdGenerator.generate(10);
     }
 
     public void resetPassword(String email) {
         Users resetUser = usersRepository.findByEmail(email);
         if (resetUser != null) {
             String generatedPassword = generateNewPassword();
-            resetUser.setPassword_hash(generatedPassword);
+            String encodedPassword = passwordEncoder.encode(generatedPassword);
+            resetUser.setPassword_hash(encodedPassword);
+            mailService.sendEmail(email, "Password Reset",
+                    "This is your new password: " + generatedPassword);
         } else {
             throw new RuntimeException("An user with this email does not exist.");
         }

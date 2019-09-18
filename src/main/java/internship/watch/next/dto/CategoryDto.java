@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class ResetPasswordDto {
-    private String email;
+public class CategoryDto {
+    private String name;
 }
