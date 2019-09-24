@@ -3,7 +3,7 @@ CREATE TABLE Role(id SERIAL PRIMARY KEY,
         isAdmin BOOLEAN);
 
 CREATE TABLE Users(id SERIAL PRIMARY KEY,
-        name VARCHAR(100),
+        username VARCHAR(100),
         email VARCHAR(100) UNIQUE,
         password_hash VARCHAR(255),
         role INT,

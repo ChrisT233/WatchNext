@@ -1,7 +1,6 @@
 package internship.watch.next.controller;
 
 import internship.watch.next.dto.ResetPasswordDto;
-import internship.watch.next.dto.SignInDto;
 import internship.watch.next.dto.SignUpDto;
 import internship.watch.next.service.AuthenticationService;
 import lombok.AllArgsConstructor;
@@ -25,10 +24,6 @@ public class AuthenticationController {
                 signUpDto.getUsername()
         );
         return ResponseEntity.ok().build(); //strictly for web requests
-    }
-    @RequestMapping(value = "/signin", method = RequestMethod.POST)
-    public ResponseEntity<?> signIn(@RequestBody SignInDto signInDto) {
-        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/reset-password", method = RequestMethod.POST)

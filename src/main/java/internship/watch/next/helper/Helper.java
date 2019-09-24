@@ -5,6 +5,7 @@ import internship.watch.next.model.Users;
 import internship.watch.next.repository.RoleRepository;
 import internship.watch.next.repository.UsersRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ public class Helper {
     private final PasswordEncoder passwordEncoder;
 
 
-    @PostConstruct
+    @PostConstruct //runs the function on app start
     public void createRoles() {
         if (roleRepository.count() == 0) {
             Role adminRole = new Role("Admin", true);
@@ -38,5 +39,11 @@ public class Helper {
                     passwordEncoder.encode("parolaCristi"), defaultUserRole);
             usersRepository.save(defaultUser);
         }
+    }
+
+    public boolean hasAccess() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users user = usersRepository.findByUsername(principal.toString());
+        return user.getRole().getName().equals("Admin");
     }
 }

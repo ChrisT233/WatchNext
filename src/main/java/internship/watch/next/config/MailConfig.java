@@ -12,6 +12,8 @@ import java.util.Properties;
 @Configuration
 @AllArgsConstructor
 public class MailConfig {
+
+    //used to access application.properties
     private final Environment environment;
 
     @Bean

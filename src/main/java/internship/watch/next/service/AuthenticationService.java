@@ -46,10 +46,10 @@ public class AuthenticationService {
         Users resetUser = usersRepository.findByEmail(email);
         if (resetUser != null) {
             String generatedPassword = generateNewPassword();
-            String encodedPassword = passwordEncoder.encode(generatedPassword);
-            resetUser.setPassword_hash(encodedPassword);
             mailService.sendEmail(email, "Password Reset",
                     "This is your new password: " + generatedPassword);
+            String encodedPassword = passwordEncoder.encode(generatedPassword);
+            resetUser.setPassword_hash(encodedPassword);
         } else {
             throw new RuntimeException("An user with this email does not exist.");
         }
