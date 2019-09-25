@@ -9,7 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +45,17 @@ public class Movie extends BaseEntity {
     public String description;
 
     @Column(nullable = false)
-    public LocalDateTime releaseTime;
+    public LocalDate releaseDate;
 
     @OneToMany(mappedBy = "movie")
     public List<MovieCategory> movieCategories = new ArrayList<>();
+
+    public Movie (String title, String trailerUrl, String originalSourceUrl, String coverUrl, LocalDate releaseDate, String imdbId) {
+        this.title = title;
+        this.trailerUrl = trailerUrl;
+        this.originalSourceUrl = originalSourceUrl;
+        this.coverUrl = coverUrl;
+        this.releaseDate = releaseDate;
+        this.imdbId = imdbId;
+    }
 }

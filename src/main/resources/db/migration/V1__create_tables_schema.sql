@@ -22,7 +22,7 @@ CREATE TABLE Movies(id SERIAL PRIMARY KEY,
         imdbId VARCHAR(200) NOT NULL,
         imdbScore FLOAT(2),
         description VARCHAR(1024),
-        releaseTime TIMESTAMP NOT NULL
+        releaseDate TIMESTAMP NOT NULL
         );
 
 CREATE TABLE MoviesCategories(id SERIAL PRIMARY KEY,
