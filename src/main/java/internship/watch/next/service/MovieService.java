@@ -4,9 +4,11 @@ import internship.watch.next.helper.Helper;
 import internship.watch.next.model.Movie;
 import internship.watch.next.repository.MovieRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,5 +46,9 @@ public class MovieService {
         } else {
             throw new RuntimeException("You do not have access.");
         }
+    }
+
+    public List<Movie> getMoviesByTimestamp(LocalDate from, LocalDate to, Integer limit, Integer skip) {
+        return movieRepository.findByReleaseDateBetween(from, to, PageRequest.of(skip, limit));
     }
 }

@@ -7,12 +7,12 @@ import internship.watch.next.service.MovieService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -56,6 +56,25 @@ public class MovieController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @RequestMapping(value = "/movie/query", method = RequestMethod.GET)
+    public ResponseEntity<List<MovieDto>> getMoviesByTimestamp(@RequestParam String from, @RequestParam String to,
+                                                               @RequestParam Integer limit, @RequestParam Integer skip) {
+        LocalDate fromDate = LocalDate.parse(from);
+        LocalDate toDate = LocalDate.parse(to);
+
+        List<Movie> movieList = movieService.getMoviesByTimestamp(fromDate, toDate, limit, skip);
+        List<MovieDto> movieDtoList = movieList
+                .stream()
+                .map(movie -> new MovieDto(
+                        movie.getTitle(),
+                        movie.getTrailerUrl(),
+                        movie.getOriginalSourceUrl(),
+                        movie.getCoverUrl(),
+                        movie.getReleaseDate()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(movieDtoList);
     }
 }
 
